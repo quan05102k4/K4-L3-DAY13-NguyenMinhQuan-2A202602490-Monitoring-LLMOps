@@ -1,25 +1,40 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: HighLatencyP95
+    severity: warning
+    condition: 'p95(latency_ms where event == "response_sent") > 2000'
+    duration: 5m
     type: symptom-based
     channel: slack
-    owner: TODO
+    slack_channel: '#k4-l3b-alerts'
+    owner: student-2A202602490
+    slo: fast_successful_requests
+    description: >-
+      Cảnh báo sớm trước khi chạm ngưỡng SLO 3000ms (baseline P95 ~190ms, tức ~10x baseline).
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: HighErrorRateOrRetrievalFailure
+    severity: critical
+    condition: >-
+      count(event == "request_failed") / count(event == "request_received") * 100 > 2
+      or count(tool_success == true) / count(tool_success != null) * 100 < 90
+    duration: 5m
     type: symptom-based
     channel: slack
-    owner: TODO
+    slack_channel: '#k4-l3b-alerts'
+    owner: student-2A202602490
+    slo: fast_successful_requests
+    description: >-
+      User nhận HTTP 500 hoặc RAG không lấy được context; đốt error budget 0.5% rất nhanh.
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: CostPerRequestSpike
+    severity: warning
+    condition: 'avg(cost_usd where event == "response_sent") > 0.004 or sum(cost_usd) by 1h > 2.5 / 24'
+    duration: 15m
     type: symptom-based
     channel: slack
-    owner: TODO
+    slack_channel: '#k4-l3b-alerts'
+    owner: student-2A202602490
+    slo: guardrails.daily_cost_usd_max
+    description: >-
+      Cost trung bình/request vượt ~2x baseline (~0.0019 USD) hoặc tốc độ đốt tiền vượt
+      ngân sách ngày 2.5 USD, dù traffic có thể không tăng.
     runbook: docs/alerts.md#alert-3

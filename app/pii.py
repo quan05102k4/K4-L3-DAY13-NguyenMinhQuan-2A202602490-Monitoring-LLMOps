@@ -3,12 +3,15 @@ from __future__ import annotations
 import hashlib
 import re
 
+# Lookaround (?<!\d)/(?!\d) ngăn pattern khớp một phần của số dài hơn.
+# CCCD (12 số liền) chạy trước thẻ: separator của thẻ là tùy chọn nên
+# "001099012345 4111 1111 1111 1111" sẽ bị pattern thẻ nuốt nhầm CCCD nếu đảo thứ tự.
 PII_PATTERNS: dict[str, str] = {
     "email": r"[\w\.-]+@[\w\.-]+\.\w+",
+    "cccd": r"(?<!\d)\d{12}(?!\d)",
+    "credit_card": r"(?<!\d)\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}(?!\d)",
     "phone_vn": r"(?<!\d)(?:\+84|0)(?:[ .-]?\d){9}(?!\d)",
-    "cccd": r"\b\d{12}\b",
-    "credit_card": r"\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b",
-    # TODO: Add more patterns (e.g., Passport, Vietnamese address keywords)
+    "passport_vn": r"\b[A-Z]\d{7}\b",
 }
 
 

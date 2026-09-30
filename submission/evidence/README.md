@@ -12,9 +12,11 @@ Tên file gợi ý:
 05-pii-redaction.png
 06-trace-list.png
 07-trace-waterfall.png
-08-trace-metadata.png
+08a-trace-metadata-root.png
+08b-trace-metadata-generation.png
 09-prompt-versions.png
-10-prompt-rollback.png
+10a-prompt-promote.png
+10b-prompt-rollback.png
 11-dashboard-overview.png
 12-incident-metric.png
 13-incident-log.png
